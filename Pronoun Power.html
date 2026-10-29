@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>POV Power-Up • Grade 6 ELA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1d2b64;--ink:#22304f;--purple:#7b3fe4;--coral:#ff6b4a;--teal:#0fa3a3;--gold:#f5b301;--green:#1fb36b;--red:#e5484d;--pink:#ff4fa3;--blue:#3d8bfd;--bg:#fff6fb;--line:#eadff5;
+ --p1:#ff4fa3;--p1l:#ffd6ea;--p2:#3d8bfd;--p2l:#d6e7ff;--p3:#1fb36b;--p3l:#cdf3df}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:radial-gradient(circle at 8% 15%,#e3f0ff 0 130px,transparent 131px),radial-gradient(circle at 92% 55%,#e6fff1 0 170px,transparent 171px),radial-gradient(#f0d7ea 1.3px,transparent 1.3px);background-size:auto,auto,20px 20px;color:var(--ink);font:18px/1.6 Nunito,system-ui,sans-serif;min-height:100vh}
+h1,h2,h3,h4,.fred{font-family:Fredoka,Nunito,sans-serif;line-height:1.2}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+header{background:linear-gradient(115deg,#ff4fa3,#7b3fe4 38%,#3d8bfd 68%,#1fb36b);color:#fff;padding:20px 16px 24px}
+.hwrap{max-width:1000px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.logo{height:92px;background:#fff;border-radius:16px;padding:6px;box-shadow:0 6px 18px #0003}
+.logo-fallback{display:none;background:#fff;color:var(--navy);border-radius:16px;padding:10px 14px;font-family:Fredoka;font-weight:700;text-align:center;line-height:1.1}
+.logo-fallback small{display:block;font:600 11px Nunito;color:var(--purple)}
+.kicker{margin:0;font-weight:800;letter-spacing:.08em;font-size:13px}
+header h1{margin:2px 0;font-size:clamp(30px,6vw,46px)}
+header p{margin:0}
+.hud{position:sticky;top:0;z-index:20;background:#ffffffee;backdrop-filter:blur(6px);border-bottom:3px solid var(--line)}
+.hudin{max-width:1000px;margin:0 auto;padding:8px 16px;display:flex;gap:6px 14px;align-items:center;flex-wrap:wrap}
+.lvl{font-family:Fredoka;font-weight:700;color:var(--purple)}
+.xpbar{flex:1 1 140px;height:16px;background:#f1e6ff;border-radius:99px;overflow:hidden}
+.xpbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff4fa3,#7b3fe4,#3d8bfd,#1fb36b);transition:width .5s}
+.xpnum{font-weight:800}.streak{font-weight:800;color:var(--coral)}
+.badges{font-size:22px;display:flex;gap:3px}.badges span{filter:grayscale(1);opacity:.3}.badges span.on{filter:none;opacity:1}
+.tbtn{background:#f1ecff;border:0;border-radius:10px;padding:6px 10px;font-size:15px;font-weight:800}
+.rate{width:66px;accent-color:var(--purple)}
+#savedBadge{font-weight:800;color:var(--green);font-size:14px}
+main{max-width:1000px;margin:0 auto;padding:16px 16px 60px}
+.start{background:#fff;border-radius:20px;padding:14px 18px;border:3px solid var(--line);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.start input{flex:1 1 220px;font:inherit;padding:10px 12px;border:3px solid #ead2f2;border-radius:12px}
+.map{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.door{border:0;border-radius:20px;padding:14px 8px;color:#fff;text-align:center;box-shadow:0 6px 0 #0002;transition:transform .15s}
+.door:hover{transform:translateY(-3px) rotate(-1deg)}
+.door .ic{font-size:34px;display:block}.door b{font-family:Fredoka;font-size:18px;display:block}.door small{font-weight:700;font-size:13px}
+.door.active{outline:4px solid var(--navy);outline-offset:3px}
+.l1{background:linear-gradient(150deg,#e8338a,#ff8cc6)}.l2{background:linear-gradient(150deg,#2a6fe0,#6fb0ff)}.l3{background:linear-gradient(150deg,#6a32d9,#a879ff)}.l4{background:linear-gradient(150deg,#f06a1d,#ffb347)}
+@media(max-width:640px){.map{grid-template-columns:repeat(2,1fr)}.logo{height:70px}}
+.lhead{border-radius:22px;padding:18px 20px;color:#fff;margin:6px 0 10px}
+.lhead h2{margin:0 0 6px;font-size:clamp(24px,4.5vw,34px)}
+.chip-std{background:#ffffff30;border:2px solid #ffffff90;border-radius:99px;padding:1px 10px;font-size:14px;font-weight:800;display:inline-block;margin:2px 4px 2px 0}
+.ican{background:#ffffff26;border-radius:14px;padding:8px 14px;margin-top:8px}.ican ul{margin:2px 0 0;padding-left:22px}
+.lprog{position:sticky;top:58px;z-index:10;background:#fff;border:3px solid var(--line);border-radius:16px;padding:8px 14px;margin:8px 0 4px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:800}
+.lprog .bar{flex:1 1 160px;height:14px;background:#f3eefc;border-radius:99px;overflow:hidden}
+.lprog .bar span{display:block;height:100%;background:linear-gradient(90deg,#1fb36b,#f5b301);transition:width .5s}
+.sect{font:600 24px Fredoka;margin:22px 0 4px;display:flex;align-items:center;gap:8px}
+.card,.act{background:#fff;border-radius:22px;padding:18px 20px;margin:14px 0;border:3px solid var(--line);position:relative;box-shadow:0 5px 0 #f1e5f4}
+.card h3,.act h4{margin:0 0 8px;font-size:22px;padding-right:105px}
+.act h4{margin-top:8px}
+.say{position:absolute;top:14px;right:14px;border:0;border-radius:12px;padding:6px 12px;font-weight:800;font-size:15px;background:#fff3c4;color:#5a4300}
+.speaking{box-shadow:0 0 0 4px var(--gold),0 0 24px #f5b30188}
+table{border-collapse:collapse;width:100%;font-size:16px;margin:8px 0}td,th{padding:8px 10px;border:2px solid #f0e6ef;text-align:left;vertical-align:top}th{background:#fbf2ff;font-family:Fredoka;font-weight:600}
+.passage{background:#f7fbff;border:2px dashed #9cc3e6;border-radius:14px;padding:12px 16px;margin:10px 0}
+.passage h5{font:600 18px Fredoka;margin:10px 0 2px}
+.callout{background:#fff6d6;border-left:6px solid var(--gold);border-radius:10px;padding:10px 14px;margin:10px 0}
+.pr1{background:var(--p1l);border-bottom:3px solid var(--p1);border-radius:5px;padding:0 3px;font-weight:800}
+.pr2{background:var(--p2l);border-bottom:3px solid var(--p2);border-radius:5px;padding:0 3px;font-weight:800}
+.pr3{background:var(--p3l);border-bottom:3px solid var(--p3);border-radius:5px;padding:0 3px;font-weight:800}
+.demo .dp{border-radius:5px;padding:0 2px;transition:.2s}
+.demo.s1 .d1,.demo.s2 .d2,.demo.s3 .d3{font-weight:800}
+.demo.s1 .d1{background:var(--p1l);border-bottom:3px solid var(--p1)}.demo.s2 .d2{background:var(--p2l);border-bottom:3px solid var(--p2)}.demo.s3 .d3{background:var(--p3l);border-bottom:3px solid var(--p3)}
+.toggles{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.tog{border:3px solid var(--line);background:#fff;border-radius:99px;padding:5px 14px;font-weight:800}
+.tog.on1{background:var(--p1);border-color:var(--p1);color:#fff}.tog.on2{background:var(--p2);border-color:var(--p2);color:#fff}.tog.on3{background:var(--p3);border-color:var(--p3);color:#fff}
+.lens{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.lens div{border-radius:16px;padding:12px;color:#fff}
+.lens .a{background:linear-gradient(150deg,#e8338a,#ff8cc6)}.lens .b{background:linear-gradient(150deg,#2a6fe0,#6fb0ff)}.lens .c{background:linear-gradient(150deg,#14935a,#3fd38a)}
+.lens b{font:600 20px Fredoka;display:block}
+.cam{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cam div{background:#f3f7ff;border:3px solid #cfe0ff;border-radius:16px;padding:12px}
+.cam .ic{font-size:34px}
+@media(max-width:640px){.lens,.cam{grid-template-columns:1fr}}
+/* tags */
+.tag{display:inline-block;font:700 14px Fredoka;color:#fff;border-radius:99px;padding:2px 12px;margin:0 4px 4px 0}
+.dok1{background:#1fb36b}.dok2{background:#3d8bfd}.dok3{background:#7b3fe4}.spiral{background:#ff6b4a}
+.pts{font-weight:800;font-size:14px;color:var(--purple)}
+/* mc */
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:#fdfaff;border:3px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0}
+.opt .let{flex:none;width:30px;height:30px;border-radius:50%;background:var(--line);display:grid;place-items:center;font:700 16px Fredoka}
+.opt.sel{border-color:var(--purple);background:#f1eaff}.opt.sel .let{background:var(--purple);color:#fff}
+.right{border-color:var(--green)!important;background:#e6f8ef!important}.right .let{background:var(--green)!important;color:#fff}
+.wrong{border-color:var(--red)!important;background:#fdeaea!important}.wrong .let{background:var(--red)!important;color:#fff}
+.part{font:600 17px Fredoka;color:#fff;background:var(--navy);border-radius:10px;padding:2px 10px;display:inline-block;margin-top:10px}
+button:disabled{cursor:default}
+/* drag and drop */
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:56px;padding:10px;background:#fff7e6;border:3px dashed #f5b301;border-radius:16px;margin:8px 0}
+.pool:empty::after{content:"All placed! 🎉";font-weight:800;color:#a07400}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.bin{border:3px solid var(--line);border-radius:16px;padding:8px;min-height:110px;background:#fff;transition:.15s}
+.bin>b{display:block;font:600 17px Fredoka;color:#fff;border-radius:10px;padding:3px 8px;margin-bottom:6px;text-align:center}
+.bin.over{transform:scale(1.03);box-shadow:0 0 0 4px var(--gold)}
+.bin.tapme{box-shadow:0 0 0 3px #f5b30199}
+.drop{display:flex;flex-wrap:wrap;gap:6px}
+.dchip{border:3px solid #d8c8f5;background:#fff;border-radius:12px;padding:6px 12px;font-weight:800;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 3px 0 #0001;text-align:left}
+.dchip.long{font-weight:600;font-size:16px;max-width:100%}
+.dchip.pick{border-color:var(--navy);background:#e8ecff;transform:scale(1.04)}
+.ghost{position:fixed;z-index:100;pointer-events:none;opacity:.92;transform:rotate(-3deg) scale(1.05);box-shadow:0 10px 24px #0003}
+/* highlighter hot text */
+.markers{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.mk{border:3px solid transparent;border-radius:12px;padding:6px 12px;font-weight:800;color:#fff}
+.mk.m1{background:var(--p1)}.mk.m2{background:var(--p2)}.mk.m3{background:var(--p3)}.mk.m0{background:#9a8fb0}
+.mk.on{border-color:var(--navy);transform:scale(1.08);box-shadow:0 0 0 3px #fff inset}
+.hl{line-height:2.2}
+.tk{border:0;background:transparent;border-radius:6px;padding:1px 3px;margin:0 1px;font-weight:600}
+.tk.c1{background:var(--p1l);box-shadow:inset 0 -3px var(--p1)}.tk.c2{background:var(--p2l);box-shadow:inset 0 -3px var(--p2)}.tk.c3{background:var(--p3l);box-shadow:inset 0 -3px var(--p3)}
+.tk.ok::after{content:"✓";color:var(--green);font-weight:800;margin-left:2px}
+.tk.bad{background:#ffd1d1!important;box-shadow:inset 0 -3px var(--red)!important}
+.tk.miss1{outline:3px dashed var(--p1)}.tk.miss2{outline:3px dashed var(--p2)}.tk.miss3{outline:3px dashed var(--p3)}
+.sent{display:inline;text-align:left;border:0;background:transparent;border-radius:8px;padding:2px 3px;font-weight:600;border-bottom:3px dotted #c9b6ff;line-height:1.9}
+.sent.on{background:#fff176;border-bottom-color:#f5b301}
+.sent.right{background:#bff0d4!important}.sent.wrong{background:#ffd1d1!important}.sent.miss{outline:3px solid var(--green)}
+.checkbtn{background:linear-gradient(90deg,#ff4fa3,#7b3fe4);color:#fff;border:0;border-radius:14px;padding:10px 22px;font-weight:800;font-size:17px;margin-top:10px;box-shadow:0 4px 0 #0002}
+.checkbtn:disabled{opacity:.4}
+.fb{border-radius:14px;padding:10px 14px;margin-top:10px;font-weight:600}
+.fb.yes{background:#e6f8ef;border:2px solid #9fe0bf}.fb.no{background:#fff1e6;border:2px solid #ffc9a3}
+.note{font-size:14px;color:#6b6250}
+textarea{width:100%;min-height:150px;font:inherit;padding:12px;border:3px solid var(--line);border-radius:14px;background:#fffdfa}
+.starters{background:#f6f0ff;border-radius:12px;padding:8px 14px;margin:8px 0;font-size:16px}
+.wc{font-size:14px;font-weight:800;color:#6b6250}.wc.ok{color:var(--green)}
+.nextbtn{display:block;margin:22px auto 0;background:var(--navy);color:#fff;border:0;border-radius:16px;padding:14px 26px;font:600 20px Fredoka;box-shadow:0 5px 0 #0003}
+.stam{background:linear-gradient(150deg,#2a1b5e,#7b3fe4);color:#fff;border-radius:22px;padding:16px 18px;text-align:center}
+.battery{display:flex;gap:4px;justify-content:center;margin:8px 0}
+.battery span{width:26px;height:34px;border-radius:6px;background:#ffffff30;transition:.3s}
+.battery span.on{background:linear-gradient(180deg,#ffe066,#1fb36b)}
+.trophy{text-align:center}.trophy .big{font-size:72px;display:block}
+.rbtns button{background:var(--navy);color:#fff;border:0;border-radius:12px;padding:10px 16px;font-weight:800;margin:6px 6px 0 0}
+#report{white-space:pre-wrap;background:#fffaf0;border:2px dashed var(--gold);border-radius:14px;padding:14px;margin-top:12px;font-size:15px}
+#report:empty{display:none}
+footer{text-align:center;font-size:14px;color:#6b6250;padding:16px 16px 40px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(160px);background:var(--navy);color:#fff;font:600 19px Fredoka;padding:12px 22px;border-radius:16px;box-shadow:0 10px 30px #0004;transition:transform .35s;z-index:50;text-align:center;max-width:92vw}
+#toast.show{transform:translateX(-50%) translateY(0)}
+.conf{position:fixed;top:-20px;width:10px;height:14px;z-index:60;pointer-events:none;border-radius:2px;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.6}}
+@media print{header,.hud,.map,.start,footer,#app>section>*:not(#repCard){display:none!important}body{background:#fff}#report{border:0}}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <img class="logo" src="logo.png" alt="The Literacy Locksmith logo" onerror="this.style.display='none';document.getElementById('lf').style.display='block'">
+  <div class="logo-fallback" id="lf">🗝️ The Literacy<br>Locksmith<small>Unlocking Skills. Opening Minds. Building Readers.</small></div>
+  <div><p class="kicker">🌊 FLORIDA B.E.S.T. REVIEW • GRADE 6 ELA</p><h1>🎭 POV Power-Up</h1><p>Who is telling the story, and how does that change what YOU know? Power up through 4 levels, earn badges, and build your reading stamina!</p></div>
+</div></header>
+
+<div class="hud"><div class="hudin">
+  <span class="lvl" id="lvl">🌱 POV Rookie</span>
+  <div class="xpbar"><span id="xpfill"></span></div>
+  <span class="xpnum" id="xpnum">0 XP</span>
+  <span class="streak" id="streak" title="Correct in a row">🔥 0</span>
+  <span class="badges"><span id="b1" title="Pronoun Pro">🔍</span><span id="b2" title="Camera Master">🎥</span><span id="b3" title="Narrator Ninja">🎭</span><span id="b4" title="Stamina Champ">💪</span></span>
+  <span id="savedBadge">💾 Saved on this iPad</span>
+  <button class="tbtn" id="stopBtn">⏹ Stop</button>
+  <span class="note">🐢</span><input class="rate" id="rate" type="range" min="0.7" max="1.2" step="0.05" value="0.95" aria-label="Reading speed"><span class="note">🐇</span>
+  <button class="tbtn" id="soundBtn">🔔 On</button>
+</div></div>
+
+<main>
+  <div class="start"><label for="student"><b>👋 Your name:</b></label><input id="student" placeholder="First and last name" autocomplete="off"></div>
+  <nav class="map" id="map"></nav>
+  <div id="app"></div>
+</main>
+<footer>The Literacy Locksmith • Created and copyrighted by Donna Rees • Original passages and practice</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===================== CONTENT ===================== */
+const STD='ELA.6.R.1.3 Explain the influence of multiple narrators and/or shifts in point of view';
+const VOLCANO=`<div class="passage"><b>The Volcano Mix-Up</b> <span class="note">(original story)</span>
+<h5 style="color:#e8338a">🌋 MAYA</h5>
+<p><b>[1]</b> I spent three weekends building my volcano for the science fair. The cone was smooth, the paint was perfect, and the baking-soda tube was hidden inside like a secret.</p>
+<p><b>[2]</b> On Friday morning, I walked into the gym and froze. Jonah was crouched next to my table, holding my volcano in both hands. One side of the cone was cracked wide open.</p>
+<p><b>[3]</b> “What did you do?” I shouted. He opened his mouth, but I didn’t wait. I grabbed my project and stormed off to find Ms. Carter. I was sure he had wrecked it on purpose, because his solar oven had lost to my project last year.</p>
+<h5 style="color:#2a6fe0">☀️ JONAH</h5>
+<p><b>[4]</b> I got to the gym early to set up my solar oven. When I walked past Maya’s table, I saw a custodian’s cart roll into it. Her volcano wobbled and smacked against the floor.</p>
+<p><b>[5]</b> The custodian had already turned the corner, so I picked it up. I had a roll of tape in my bag, and I was trying to hold the crack together when Maya came in.</p>
+<p><b>[6]</b> She looked at me like I was a villain. I wanted to explain, but my words got tangled. Now I just hope she’ll listen before Ms. Carter decides what happened.</p></div>`;
+
+const LEVELS=[
+{id:1,cls:'l1',name:'Pronoun Power',icon:'🔍',sub:'1st • 2nd • 3rd',badge:'🔍 Pronoun Pro',bg:'linear-gradient(130deg,#d42a7c,#ff8cc6)',
+ ican:['name the point of view by looking at the narrator’s pronouns.','highlight 1st, 2nd, and 3rd person pronouns.','avoid the trap: “he” and “she” can appear in a first-person story!'],
+ learn:[
+ {t:'🎤 Who Is Telling the Story?',h:`<p>The <b>narrator</b> is the voice telling the story. <b>Point of view (POV)</b> is the position the narrator tells it from. The fastest clue? <b>The pronouns the narrator uses.</b></p>
+ <div class="lens"><div class="a"><b>1st Person 💗</b>The narrator is a character IN the story.<br><b style="font-size:16px">I, me, my, mine, we, us, our</b></div>
+ <div class="b"><b>2nd Person 💙</b>The narrator talks to YOU, as if you are the character.<br><b style="font-size:16px">you, your, yours, yourself</b></div>
+ <div class="c"><b>3rd Person 💚</b>The narrator is OUTSIDE the story, telling about others.<br><b style="font-size:16px">he, she, they, him, her, them, his, its</b></div></div>`},
+ {t:'🖍️ Pronoun Highlighter Demo',demo:true,h:`<p>Tap the buttons to light up each kind of pronoun in this paragraph.</p>
+ <div class="toggles noread"><button class="tog" data-demo="1">💗 1st person</button><button class="tog" data-demo="2">💙 2nd person</button><button class="tog" data-demo="3">💚 3rd person</button></div>
+ <div class="passage demo" id="demo"><span class="dp d1">I</span> watched <span class="dp d1">my</span> sister Rosa climb the rock wall. <span class="dp d3">She</span> was halfway up when <span class="dp d3">her</span> foot slipped. “<span class="dp d2">You</span> can do it!” <span class="dp d1">I</span> yelled. <span class="dp d3">She</span> grabbed the next hold, and <span class="dp d1">we</span> both cheered when <span class="dp d3">she</span> rang the bell at the top.</div>
+ <p class="note">Notice: this paragraph has 1st, 2nd, AND 3rd person pronouns. So what is the POV? Keep reading! 👇</p>`},
+ {t:'⚠️ The Pronoun Trap',h:`<p>A first-person story will still use <span class="pr3">she</span> and <span class="pr3">he</span> to talk about OTHER characters. Words inside “quotation marks” are what characters say. They don’t decide the POV either.</p>
+ <div class="callout"><b>Detective rule:</b> Ask, “What does the <u>narrator</u> call <u>himself or herself</u>?”<br>If the narrator says <span class="pr1">I</span> or <span class="pr1">my</span> about the narrator → <b>1st person</b>, even when <span class="pr3">she</span> appears.<br>The Rosa paragraph above is <b>1st person</b>. The narrator says “<span class="pr1">I</span> watched <span class="pr1">my</span> sister.”</div>`}
+ ],
+ acts:[
+ {type:'dnd',dok:1,title:'Pronoun Sort',q:'Drag each pronoun into the correct bin. (You can also tap a pronoun, then tap a bin.)',bins:['💗 1st Person','💙 2nd Person','💚 3rd Person'],binC:['#ff4fa3','#3d8bfd','#1fb36b'],
+  chips:[['I',0],['us',0],['my',0],['ours',0],['you',1],['yours',1],['yourself',1],['he',2],['them',2],['its',2],['she',2],['their',2]]},
+ {type:'hl',dok:1,title:'Pronoun Highlighter',q:'Pick a marker, then tap EVERY pronoun and color it by its kind. Use the eraser to fix a mistake.',
+  text:'{1|I} grabbed {1|my} backpack and ran to the bus stop. Mom called after {1|me}, “Don’t forget {2|your} lunch!” {1|I} turned around, and {3|she} held up the bag with a smile. The dog wagged {3|his} tail as if {3|he} wanted to come too. “{2|You} two are the best,” {1|I} said, and {1|we} all laughed.'},
+ {type:'mc',dok:1,title:'Name That POV',q:'“My brother Leo thinks he is the fastest runner on our street. He challenged me to a race after dinner. I said yes, even though my legs were still sore from soccer.” What is the point of view?',o:['First person','Second person','Third person limited','Third person omniscient'],a:[0],w:'The narrator calls himself or herself “my,” “me,” and “I.” “He” is just Leo, another character. That’s the pronoun trap!'},
+ {type:'mc',dok:1,title:'Spot Second Person',q:'Which sentence is written in second-person point of view?',o:['I opened the creaky door and stepped inside.','You open the creaky door and step into the dark hallway.','She opened the creaky door and gasped.','They opened the creaky door together.'],a:[1],w:'Second person puts YOU in the story: “You open… you step…”'},
+ {type:'mc',dok:2,title:'Explain the Clue',q:'A student says, “This story is third person because it uses the word she.” Why might the student be WRONG?',o:['“She” is never used in stories.','A first-person narrator can use “she” to talk about other characters.','Third person always uses “you.”','Only poems use pronouns.'],a:[1],w:'Always check what the narrator calls himself or herself, not just any pronoun on the page.'}
+ ]},
+{id:2,cls:'l2',name:'Camera Lenses',icon:'🎥',sub:'3rd Person Trio',badge:'🎥 Camera Master',bg:'linear-gradient(130deg,#1f5fcf,#6fb0ff)',
+ ican:['tell the difference between third person limited, omniscient, and objective.','explain what readers can and cannot know in each POV.'],
+ learn:[
+ {t:'🎬 Three Kinds of Third Person',h:`<p>All three use <span class="pr3">he</span>, <span class="pr3">she</span>, and <span class="pr3">they</span>. The difference is <b>whose thoughts the narrator can see</b>. Think of three different cameras:</p>
+ <div class="cam"><div><span class="ic">🎥</span><br><b>Limited = over-the-shoulder camera</b><br>Follows ONE character and shares only <u>that</u> character’s thoughts and feelings.</div>
+ <div><span class="ic">🚁</span><br><b>Omniscient = all-seeing drone</b><br>“Omni” means all. The narrator knows the thoughts of MANY characters.</div>
+ <div><span class="ic">📹</span><br><b>Objective = security camera</b><br>Shows only what can be seen and heard. NO thoughts or feelings.</div></div>`},
+ {t:'👀 Same Scene, Three Cameras',h:`<table><tr><th>POV</th><th>Example</th></tr>
+ <tr><td>3rd Limited</td><td>Jada stepped onto the stage. <i>She prayed she wouldn’t forget her lines.</i></td></tr>
+ <tr><td>3rd Omniscient</td><td>Jada prayed she wouldn’t forget her lines, <i>while her dad worried his camera battery would die.</i></td></tr>
+ <tr><td>3rd Objective</td><td>Jada stepped onto the stage. She cleared her throat and looked at the crowd.</td></tr></table>
+ <div class="callout"><b>Why it matters:</b> POV controls what YOU know. In limited, you only know one character’s mind, so you may be just as surprised as that character!</div>`}
+ ],
+ acts:[
+ {type:'mc',dok:1,spiral:'Level 1',title:'Spiral Warm-Up',q:'Which pronoun is first person?',o:['they','we','you','she'],a:[1],w:'“We” includes the narrator, so it is first person.'},
+ {type:'mc',dok:1,spiral:'Level 1',title:'Spiral Warm-Up',q:'In first-person POV, the narrator is…',o:['someone outside the story who knows everything','a character in the story who uses I and me','the reader','always the villain'],a:[1],w:'A first-person narrator is a character telling the story from inside it.'},
+ {type:'dnd',dok:2,title:'POV Match-Up',q:'Drag each passage into the POV bin it matches.',bins:['💗 1st Person','💙 2nd Person','🎥 3rd Limited','🚁 3rd Omniscient','📹 3rd Objective'],binC:['#ff4fa3','#3d8bfd','#1fb36b','#7b3fe4','#f06a1d'],long:true,
+  chips:[['I peeked at the test and felt my stomach drop.',0],['You hold your breath as the teacher passes out the test.',1],['Ana stared at the test. She hoped no one could hear her heart pounding.',2],['Ana worried about the test, while Mr. Ruiz secretly wondered if he had made it too hard.',3],['Ana stared at the test. She tapped her pencil twice and began to write.',4],['Marcus wondered whether his friends noticed his new shoes. He kept glancing down, hoping they would say something.',2]]},
+ {type:'hot',dok:2,title:'Hot Text: Prove It!',q:'This passage is third person omniscient. Tap the TWO sentences that PROVE it.',sents:['The bell rang, and the students rushed into the cafeteria.','Priya hoped her friends had saved her a seat by the window.','She carried her tray past the long row of tables.','At the corner table, Malik secretly wished Priya would sit with him.','The lunch worker wiped the counter and called the next student.'],a:[1,3],w:'The narrator shares the thoughts of TWO characters, Priya and Malik. That “all-seeing drone” view is omniscient.'},
+ {type:'ab',dok:2,title:'Two-Part Challenge',passage:'“Tomas stood at the edge of the diving board. His knees shook, and he was sure everyone was laughing at him. He glanced down at the water and took a deep breath. Below, his coach clapped once and nodded.”',
+  A:{q:'Part A: What does the third-person limited POV help readers understand?',o:['Tomas’s fear and what he believes others think of him','What the coach is secretly thinking','Exactly what every swimmer thinks of Tomas','How the pool was built'],a:[0]},
+  B:{q:'Part B: Which sentence BEST supports your answer to Part A?',o:['“Tomas stood at the edge of the diving board.”','“His knees shook, and he was sure everyone was laughing at him.”','“He glanced down at the water and took a deep breath.”','“Below, his coach clapped once and nodded.”'],a:[1]},
+  w:'We only see inside Tomas’s mind. We don’t know if people really ARE laughing. That is the limit of limited POV!'},
+ {type:'mc',dok:3,title:'Switch the Camera',q:'How would the diving passage change if it were written in third person OBJECTIVE?',o:['Readers would see actions like his shaking knees, but would not be told he is sure everyone is laughing.','Readers would learn what every person at the pool is thinking.','Tomas would start using “I” and “me.”','Nothing would change.'],a:[0],w:'The objective “security camera” shows only actions and words, so Tomas’s private worry would disappear.'}
+ ]},
+{id:3,cls:'l3',name:'Narrator Swap',icon:'🎭',sub:'Multiple Narrators & Shifts',badge:'🎭 Narrator Ninja',bg:'linear-gradient(130deg,#5b2bc4,#a879ff)',
+ ican:['identify when a story shifts to a new narrator or point of view.','explain how multiple narrators influence what the reader knows and feels.'],
+ learn:[
+ {t:'🔄 Multiple Narrators & Shifts',h:`<p>Some stories have <b>multiple narrators</b>. Different characters take turns telling the story, often in sections labeled with their names. A <b>shift in POV</b> happens when the story moves to a new narrator or a new “camera.”</p>
+ <table><tr><th>How a shift can influence the reader</th></tr>
+ <tr><td>🔎 Readers see the <b>same event from different sides</b>.</td></tr>
+ <tr><td>🤫 Readers may know <b>more than any one character</b> (dramatic irony), which builds suspense.</td></tr>
+ <tr><td>💞 Readers may <b>change their feelings</b> about a character once they hear that character’s side.</td></tr>
+ <tr><td>🧐 Each narrator is <b>limited</b>, so one narrator’s opinion isn’t the whole truth.</td></tr></table>
+ <div class="callout"><b>Ask every time the narrator changes:</b> Who is telling now? What do they know? What DON’T they know? How does my view change?</div>`},
+ {t:'📖 Read: The Volcano Mix-Up',h:VOLCANO}
+ ],
+ acts:[
+ {type:'mc',dok:1,spiral:'Level 1',title:'Spiral Warm-Up',q:'In “The Volcano Mix-Up,” both Maya and Jonah tell their parts using “I.” What POV does each section use?',o:['First person','Second person','Third person objective','Third person omniscient'],a:[0],w:'Each narrator is a character using I, me, and my. Two first-person narrators!'},
+ {type:'mc',dok:2,spiral:'Level 2',title:'Spiral Warm-Up',q:'Maya’s section only shows Maya’s thoughts. Which camera is that MOST like?',o:['An all-seeing drone','An over-the-shoulder camera on one character','A security camera with no thoughts','No camera at all'],a:[1],w:'Like limited POV, Maya’s section lets us inside only ONE mind: hers.'},
+ {type:'hot',dok:2,title:'Hot Text: The Game Changer',q:'Tap the ONE sentence from Jonah’s section that MOST changes how readers understand Maya’s accusation.',sents:['I got to the gym early to set up my solar oven.','When I walked past Maya’s table, I saw a custodian’s cart roll into it.','Her volcano wobbled and smacked against the floor.','I had a roll of tape in my bag, and I was trying to hold the crack together when Maya came in.','I wanted to explain, but my words got tangled.'],a:[1],w:'This reveals Jonah didn’t cause the damage. A cart did! Maya doesn’t know this, but now the reader does.'},
+ {type:'dnd',dok:2,title:'Who Revealed It?',q:'Drag each detail to the narrator whose section reveals it.',bins:['🌋 Maya’s section','☀️ Jonah’s section'],binC:['#e8338a','#2a6fe0'],long:true,
+  chips:[['Maya suspects Jonah because of last year’s contest.',0],['A custodian’s cart knocked the volcano over.',1],['Jonah was taping the crack to fix it.',1],['Maya spent three weekends building the volcano.',0],['Jonah’s words got tangled when he tried to explain.',1],['Maya stormed off to find Ms. Carter.',0]]},
+ {type:'ab',dok:3,title:'Two-Part Challenge',
+  A:{q:'Part A: How does switching from Maya’s narration to Jonah’s narration influence the reader?',o:['Readers now know the truth about the accident while Maya still does not, which builds tension about whether she will listen.','It proves Maya is a mean person who never tells the truth.','It shows that Jonah wrecked the volcano on purpose.','It makes the story simpler because only one narrator is needed.'],a:[0]},
+  B:{q:'Part B: Which TWO details BEST support your answer to Part A?',o:['“I was sure he had wrecked it on purpose, because his solar oven had lost to my project last year.”','“The cone was smooth, the paint was perfect…”','“I saw a custodian’s cart roll into it.”','“I got to the gym early to set up my solar oven.”'],a:[0,2]},
+  w:'Maya’s belief (on purpose!) plus Jonah’s truth (a cart did it) show the gap between what Maya knows and what the reader knows. That’s dramatic irony.'},
+ {type:'mc',dok:3,title:'What If…?',q:'If the whole story were told ONLY from Maya’s point of view, how would readers’ view of Jonah most likely be different?',o:['Readers would likely believe Jonah ruined the volcano on purpose, because they would only have Maya’s suspicion.','Readers would still know about the custodian’s cart.','Readers would know all of Jonah’s thoughts.','There would be no difference.'],a:[0],w:'Without Jonah’s section, readers are stuck with Maya’s limited (and wrong!) view.'},
+ {type:'write',dok:3,id:'w1',title:'CER: Explain the Influence',q:'Explain how using TWO narrators influences the reader’s understanding of the conflict in “The Volcano Mix-Up.” Include a claim, evidence from BOTH narrators, and your reasoning.',
+  starters:'💬 <b>Claim:</b> Using two narrators helps the reader… • <b>Evidence:</b> In Maya’s section, she says… In Jonah’s section, he reveals… • <b>Reasoning:</b> This shows… because…'},
+ {type:'write',dok:3,id:'w2',title:'POV Remix',q:'Rewrite paragraph 2 in third person OMNISCIENT so readers know what BOTH Maya and Jonah are thinking. Then add one sentence explaining how your shift changes the reader’s view.',
+  starters:'💬 Try: “Maya walked into the gym and froze, thinking… At the same moment, Jonah…”'}
+ ]},
+{id:4,cls:'l4',name:'Stamina Spiral',icon:'💪',sub:'Mixed Review',badge:'💪 Stamina Champ',bg:'linear-gradient(130deg,#e0590f,#ffb347)',stamina:true,
+ ican:['keep going through a mixed review of every POV skill, from DOK 1 to DOK 3!'],
+ learn:[],
+ acts:[
+ {type:'mc',dok:1,spiral:'Level 1',title:'Round 1',q:'Which word is a second-person pronoun?',o:['ourselves','yourselves','themselves','myself'],a:[1],w:'“Yourselves” speaks to YOU (more than one of you).'},
+ {type:'hl',dok:1,spiral:'Level 1',max:10,title:'Round 2',q:'Highlight every pronoun by its kind.',text:'{1|We} told {3|them} that {2|your} plan was brilliant.'},
+ {type:'mc',dok:2,spiral:'Level 2',title:'Round 3',q:'“Lena wondered if the storm would cancel the game. Outside, the sky turned dark gray.” What is the POV?',o:['First person','Second person','Third person limited','Third person objective'],a:[2],w:'We hear Lena’s thoughts only, so it’s third person limited.'},
+ {type:'mc',dok:1,spiral:'Level 2',title:'Round 4',q:'A narrator who knows the thoughts of EVERY character is…',o:['first person','objective','omniscient','second person'],a:[2],w:'Omni = all. The all-seeing drone!'},
+ {type:'dnd',dok:2,spiral:'Level 1',title:'Round 5',q:'Drag each sentence to its POV. Watch out for the trap!',bins:['💗 1st Person','💚 3rd Person'],binC:['#ff4fa3','#1fb36b'],long:true,
+  chips:[['I can’t believe we won!',0],['They couldn’t believe they won.',1],['My coach hugged me.',0],['Her coach hugged her.',1],['She told me the good news.',0]]},
+ {type:'hot',dok:2,spiral:'Level 3',title:'Round 6',q:'Tap the sentence where the point of view SHIFTS.',sents:['I raced down the hallway, sure I was late.','My sneakers squeaked on the shiny floor.','Meanwhile, in the classroom, Mr. Patel smiled because he knew the clock was ten minutes fast.'],a:[2],w:'The story shifts from the “I” narrator to Mr. Patel’s thoughts, something the first narrator couldn’t know.'},
+ {type:'mc',dok:3,spiral:'Level 3',title:'Round 7',q:'Why might an author tell a mystery from the detective’s first-person point of view?',o:['So readers discover clues at the same time as the detective, which builds suspense','So readers know the answer from page one','So the detective never has to think','So the story has no narrator'],a:[0],w:'A limited view keeps readers guessing right along with the detective.'},
+ {type:'mc',dok:2,spiral:'Level 2',title:'Round 8',q:'Which sentence is written in third person OBJECTIVE?',o:['The boy felt lonely as he walked to the window.','The boy dropped his bag and walked to the window.','I dropped my bag and walked to the window.','You drop your bag and walk to the window.'],a:[1],w:'Only actions, with no feelings or thoughts. That’s the security camera!'},
+ {type:'mc',dok:3,spiral:'Level 3',title:'Round 9',q:'A novel switches back and forth between a girl and her grandmother as narrators. What is the MOST likely effect?',o:['Readers understand how two generations see the same events differently.','Readers get confused and learn nothing.','Readers only learn the grandmother’s thoughts.','The story becomes second person.'],a:[0],w:'Multiple narrators let readers compare two perspectives on the same events.'},
+ {type:'write',dok:3,id:'w3',title:'Round 10: Final Reflection',q:'In 2–3 sentences: Which point of view do you most enjoy reading? Explain how it affects what you know as a reader.',starters:'💬 I enjoy reading ___ point of view because it lets me… This affects what I know because…'}
+ ]}
+];
+
+/* ===================== STATE + AUTOSAVE ===================== */
+const KEY='povPowerUp_v1';
+let S={name:'',lv:1,d:{},sound:true,rate:0.95,streak:0,best:0,badges:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)S=Object.assign(S,s)}catch(e){}
+/* Autosave on this iPad: saves every tap/keystroke, when the app is switched or closed, and asks the browser to keep the data */
+let okStore=true;try{localStorage.setItem('__t','1');localStorage.removeItem('__t')}catch(e){okStore=false}
+function markSaved(){const b=document.getElementById('savedBadge');if(b)b.textContent=okStore?'💾 Saved on this iPad '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'⚠️ Not saving: turn off Private/Incognito mode'}
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){okStore=false}markSaved()}
+window.addEventListener('pagehide',save);document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
+
+const aid=(l,i)=>'l'+l+'a'+(i+1);
+const words=t=>(t||'').trim().split(/\s+/).filter(Boolean).length;const MINW=15;
+const getD=id=>S.d[id]||(S.d[id]={});
+function parseHL(text){return text.split(' ').map(w=>{const m=w.match(/\{(\d)\|([^}]+)\}/);return m?{t:w.replace(m[0],m[2]),c:+m[1]}:{t:w,c:0}})}
+function maxPts(a){return a.type==='mc'?(a.a.length>1?20:10):a.type==='ab'?20:a.type==='dnd'?a.chips.length*5:a.type==='hl'?(a.max||20):a.type==='hot'?10:15}
+function earned(a,id){const d=S.d[id];if(!d)return 0;if(a.type==='write')return words(d.text)>=MINW?15:0;return d.done?d.pts:0}
+const isDone=(a,id)=>{const d=S.d[id];return a.type==='write'?!!d&&words(d.text)>=MINW:!!d&&!!d.done};
+const ALL=[];LEVELS.forEach(L=>L.acts.forEach((a,i)=>ALL.push({L,a,id:aid(L.id,i)})));
+const MAXXP=ALL.reduce((s,x)=>s+maxPts(x.a),0);
+const xp=()=>ALL.reduce((s,x)=>s+earned(x.a,x.id),0);
+const lvDone=L=>L.acts.every((a,i)=>isDone(a,aid(L.id,i)));
+const lvCount=L=>L.acts.filter((a,i)=>isDone(a,aid(L.id,i))).length;
+function title(x){const p=x/MAXXP;return p>=.85?'👑 POV Legend':p>=.6?'🌟 Perspective Pro':p>=.3?'📚 Lens Learner':'🌱 POV Rookie'}
+
+/* ===================== FX ===================== */
+let ac;function tone(fs){if(!S.sound)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime;fs.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.11);g.gain.exponentialRampToValueAtTime(.18,t+i*.11+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.11+.2);o.connect(g).connect(ac.destination);o.start(t+i*.11);o.stop(t+i*.11+.22)})}catch(e){}}
+function confetti(n=40){const cs=['#ff4fa3','#7b3fe4','#3d8bfd','#1fb36b','#f5b301','#ff6b4a'];for(let i=0;i<n;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=cs[i%cs.length];d.style.animationDelay=Math.random()*.5+'s';d.style.animationDuration=1.3+Math.random()*1.4+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),3400)}}
+let tt;function toast(m,ms=2600){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),ms)}
+const YAY=['🎉 Nailed it!','🌟 Brilliant thinking!','🔥 You’re on fire!','💪 Strong reading!','🚀 Keep that energy!','🧠 Big-brain move!','✨ Perspective pro!'];
+const GROW=['💡 Mistakes help your brain grow. Read the tip and keep going!','🌱 That’s how we learn. On to the next one!','💪 Shake it off. You’ve got the next one!','🧭 Good try! Check the explanation, then power on!'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function result(pts,max){const ok=pts>=max;if(ok){S.streak++;S.best=Math.max(S.best,S.streak);tone([660,880,1047]);confetti(28);toast(pick(YAY)+' +'+pts+' XP'+(S.streak>=3?'  🔥'+S.streak+' in a row!':''))}else{S.streak=0;tone([330,260]);toast((pts?'👍 +'+pts+' XP. ':'')+pick(GROW))}save();afterProgress()}
+function afterProgress(){LEVELS.forEach(L=>{if(lvDone(L)&&!S.badges[L.id]){S.badges[L.id]=1;save();setTimeout(()=>{tone([523,659,784,1047,1319]);confetti(L.id===4?160:90);toast('🏅 Badge unlocked: '+L.badge+'!',3400)},1000)}});hud();lprog();renderMap();if(S.lv===4)stamina()}
+
+/* ===================== READ ALOUD ===================== */
+let voice=null;
+function pickVoice(){if(!('speechSynthesis' in window))return;const v=speechSynthesis.getVoices();voice=v.find(x=>x.name==='Google US English')||v.find(x=>x.lang==='en-US'&&/Samantha|Aria|Jenny|Zira|Ava|Allison|female/i.test(x.name))||v.find(x=>x.lang==='en-US')||null}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+const clean=t=>t.replace(/\b(?:ELA\.)?(?:K12|\d)\.[A-Z]{1,2}\.\d+(?:\.\d+)?\b/g,' ').replace(/\bDOK\s*(\d)/g,'').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\u{2B50}]/gu,' ').replace(/→/g,', then, ').replace(/\s*\/\s*/g,' or ').replace(/\[(\d)\]/g,'Paragraph $1. ').replace(/\s+([.,])/g,'$1').replace(/(\.\s*){2,}/g,'. ').replace(/\s{2,}/g,' ').trim();
+function textOf(el){const c=el.cloneNode(true);c.querySelectorAll('.noread,.say,textarea,.checkbtn,.tag,.pts').forEach(x=>x.remove());c.querySelectorAll('td,th,li,p,h4,h5,.opt,.bin>b,.dchip,.sent,.lens div,.cam div,.part').forEach(x=>x.append('. '));return c.textContent}
+let spEl=null;function stopSpeak(){if('speechSynthesis' in window)speechSynthesis.cancel();if(spEl)spEl.classList.remove('speaking');spEl=null}
+function speak(text,el){if(!('speechSynthesis' in window)){toast('Read-aloud is not available on this device.');return}const same=spEl===el;stopSpeak();if(same)return;const c=clean(text),parts=c.match(/[^.!?]+[.!?]*/g)||[c],ch=[];let cur='';parts.forEach(p=>{if((cur+p).length>220&&cur){ch.push(cur);cur=p}else cur+=p});if(cur.trim())ch.push(cur);spEl=el;el&&el.classList.add('speaking');ch.forEach((x,i)=>{const u=new SpeechSynthesisUtterance(x.trim());if(voice)u.voice=voice;u.lang='en-US';u.rate=+S.rate;if(i===ch.length-1)u.onend=()=>{if(spEl===el){el&&el.classList.remove('speaking');spEl=null}};speechSynthesis.speak(u)})}
+
+/* ===================== RENDER ACTIVITIES ===================== */
+const $=s=>document.querySelector(s);
+const L_='ABCD';
+function mcOpts(id,part,o,ans,sel,done){return o.map((t,j)=>{let c='opt';if(sel.includes(j))c+=' sel';if(done){if(ans.includes(j))c+=' right';else if(sel.includes(j))c+=' wrong'}return `<button class="${c}" data-act="${id}" data-part="${part}" data-mc="${j}" ${done?'disabled':''}><span class="let">${L_[j]}</span><span>${t}</span></button>`}).join('')}
+const chk=(id,ready)=>`<button class="checkbtn" data-check="${id}" ${ready?'':'disabled'}>🔒 Lock it in</button><p class="note noread">One try, so double-check before you lock it in!</p>`;
+const fb=(ok,w)=>`<div class="fb ${ok?'yes':'no'}">${ok?'🎉 Perfect! ':'💡 '}${w||''}</div>`;
+function actHTML(L,a,i){const id=aid(L.id,i),d=S.d[id]||{},max=maxPts(a);let b='';
+ if(a.type==='mc'){const sel=d.sel||[];b=mcOpts(id,'x',a.o,a.a,sel,d.done)+(d.done?fb(d.pts===max,a.w):chk(id,sel.length===a.a.length))}
+ if(a.type==='ab'){const sa=d.A||[],sb=d.B||[];b=(a.passage?`<div class="passage">${a.passage}</div>`:'')+`<span class="part">Part A</span><p><b>${a.A.q}</b></p>`+mcOpts(id,'A',a.A.o,a.A.a,sa,d.done)+`<span class="part">Part B</span><p><b>${a.B.q}</b></p>`+mcOpts(id,'B',a.B.o,a.B.a,sb,d.done)+(d.done?fb(d.pts===max,a.w):chk(id,sa.length===a.A.a.length&&sb.length===a.B.a.length))}
+ if(a.type==='dnd'){const pl=d.place||{};const chip=(k)=>{const c=a.chips[k];let cl='dchip'+(a.long?' long':'');if(d.pick===k)cl+=' pick';if(d.done)cl+=pl[k]===c[1]?' right':' wrong';return `<button class="${cl}" data-act="${id}" data-chip="${k}" ${d.done?'disabled':''}>${c[0]}${d.done&&pl[k]!==c[1]?' <span class="noread">→ '+a.bins[c[1]]+'</span>':''}</button>`};
+  const pool=a.chips.map((_,k)=>k).filter(k=>pl[k]===undefined);
+  b=(d.done?'':`<div class="pool" data-act="${id}" data-bin="-1">${pool.map(chip).join('')}</div>`)+`<div class="bins">${a.bins.map((n,bi)=>`<div class="bin ${d.pick!==undefined&&!d.done?'tapme':''}" data-act="${id}" data-bin="${bi}"><b style="background:${a.binC[bi]}">${n}</b><div class="drop">${a.chips.map((_,k)=>k).filter(k=>pl[k]===bi).map(chip).join('')}</div></div>`).join('')}</div>`+(d.done?fb(d.pts===max,d.pts===max?'Everything is in the right bin!':'Red items show where they belong.'):chk(id,pool.length===0))}
+ if(a.type==='hl'){const tk=parseHL(a.text),col=d.col||{},mk=d.mk===undefined?1:d.mk;
+  b=(d.done?'':`<div class="markers noread">${[[1,'💗 1st'],[2,'💙 2nd'],[3,'💚 3rd'],[0,'🧽 Eraser']].map(([m,n])=>`<button class="mk m${m} ${mk===m?'on':''}" data-act="${id}" data-mk="${m}">${n}</button>`).join('')}</div>`)+
+  `<div class="passage hl">${tk.map((t,k)=>{let c='tk';if(col[k])c+=' c'+col[k];if(d.done){if(t.c&&col[k]===t.c)c+=' ok';else if(t.c)c+=' miss'+t.c;else if(col[k])c+=' bad'}return `<button class="${c}" data-act="${id}" data-tk="${k}" ${d.done?'disabled':''}>${t.t}</button>`}).join(' ')}</div>`+
+  (d.done?fb(d.pts===max,d.pts===max?'Every pronoun is colored correctly!':'Dashed outlines show pronouns you missed (in the color they should be). Red shows words that are not pronouns.'):chk(id,Object.keys(col).length>0))}
+ if(a.type==='hot'){const on=d.on||[];b=`<div class="passage">${a.sents.map((s,k)=>{let c='sent';if(on.includes(k))c+=' on';if(d.done){if(a.a.includes(k))c+=on.includes(k)?' right':' miss';else if(on.includes(k))c+=' wrong'}return `<button class="${c}" data-act="${id}" data-sent="${k}" ${d.done?'disabled':''}>${s}</button>`}).join(' ')}</div>`+(d.done?fb(d.pts===max,a.w):chk(id,on.length===a.a.length))}
+ if(a.type==='write'){const n=words(d.text);b=(a.starters?`<div class="starters">${a.starters}</div>`:'')+`<textarea data-act="${id}" data-write="1" placeholder="Type, or write with your Apple Pencil here.">${(d.text||'').replace(/</g,'&lt;')}</textarea><span class="wc noread ${n>=MINW?'ok':''}" id="wc-${id}">${n} words ${n>=MINW?'✅ +15 XP':'(write at least '+MINW+' words for +15 XP)'}</span>`}
+ const typeName={mc:'❓ Choose',ab:'🅰️🅱️ Two-Part',dnd:'✋ Drag & Drop',hl:'🖍️ Hot Text Highlight',hot:'👆 Hot Text',write:'✏️ Write'}[a.type];
+ return `<div class="act" id="box-${id}"><span class="tag dok${a.dok}">DOK ${a.dok}</span>${a.spiral?`<span class="tag spiral">🔁 Spiral: ${a.spiral}</span>`:''}<span class="tag noread" style="background:#22304f">${typeName}</span><span class="pts noread">${a.type==='write'?(isDone(a,id)?'Earned 15 XP':'Up to 15 XP'):d.done?'Earned '+d.pts+' / '+max+' XP':'Up to '+max+' XP'}${a.type==='mc'&&a.a.length>1?' • Select TWO':''}</span><button class="say">🔊 Read</button><h4>${a.title}</h4><p>${a.q||''}</p>${b}</div>`}
+
+function grade(a,id){const d=getD(id),max=maxPts(a);let pts=0;const same=(s,t)=>s.length===t.length&&t.every(v=>s.includes(v));
+ if(a.type==='mc')pts=same(d.sel||[],a.a)?max:0;
+ if(a.type==='ab')pts=(same(d.A||[],a.A.a)?10:0)+(same(d.B||[],a.B.a)?10:0);
+ if(a.type==='dnd'){const pl=d.place||{};a.chips.forEach((c,k)=>{if(pl[k]===c[1])pts+=5})}
+ if(a.type==='hl'){const tk=parseHL(a.text),col=d.col||{},tot=tk.filter(t=>t.c).length;let good=0,extra=0;tk.forEach((t,k)=>{if(t.c&&col[k]===t.c)good++;else if(!t.c&&col[k])extra++});pts=Math.max(0,Math.round(max*(good-extra)/tot))}
+ if(a.type==='hot'){const on=d.on||[];const hit=on.filter(k=>a.a.includes(k)).length;pts=Math.round(10*Math.max(0,hit-(on.length-hit))/a.a.length)}
+ d.done=true;d.pick=undefined;d.pts=pts;save();result(pts,max)}
+
+/* ===================== PAGES ===================== */
+function renderMap(){$('#map').innerHTML=LEVELS.map(L=>{const done=lvDone(L);return `<button class="door ${L.cls} ${S.lv===L.id?'active':''}" data-lv="${L.id}"><span class="ic">${done?'🏅':L.icon}</span><b>Level ${L.id}: ${L.name}</b><small>${L.sub}${done?' ✅':' • '+lvCount(L)+'/'+L.acts.length}</small></button>`}).join('')}
+function hud(){const x=xp();$('#xpfill').style.width=Math.min(100,x/MAXXP*100)+'%';$('#xpnum').textContent=x+' / '+MAXXP+' XP';$('#lvl').textContent=title(x);$('#streak').textContent='🔥 '+S.streak;LEVELS.forEach(L=>$('#b'+L.id).classList.toggle('on',lvDone(L)));$('#soundBtn').textContent=S.sound?'🔔 On':'🔕 Off'}
+function lprog(){const el=$('#lprog');if(!el)return;const L=LEVELS[S.lv-1],n=lvCount(L),t=L.acts.length,left=t-n;
+ const msg=left===0?'🏅 Level complete! '+L.badge+' earned!':left===1?'⚡ Just ONE more to earn '+L.badge+'!':n===0?'🚀 Let’s go! '+t+' challenges to earn '+L.badge:n>=t/2?'💪 Past halfway! '+left+' more to go!':'👍 Nice start! '+left+' more to earn '+L.badge;
+ el.innerHTML=`<span>${msg}</span><div class="bar"><span style="width:${n/t*100}%"></span></div><span>${n}/${t}</span>`}
+function stamina(){const el=$('#stam');if(!el)return;const L=LEVELS[3],n=lvCount(L);const msgs=['Charge up your reading stamina! ⚡','Great start. Keep the battery charging!','You’re building real stamina! 🔋','Halfway charged. Don’t stop now! 💪','Almost full. Finish strong! 🏁','FULLY CHARGED! You are a Stamina Champ! 🏆'];
+ el.querySelector('.battery').innerHTML=L.acts.map((_,k)=>`<span class="${k<n?'on':''}"></span>`).join('');el.querySelector('.smsg').textContent=msgs[Math.min(5,Math.floor(n/2))]}
+function render(){stopSpeak();renderMap();hud();const L=LEVELS[S.lv-1],app=$('#app');
+ app.innerHTML=`<section>
+ <div class="lhead" style="background:${L.bg}"><h2>${L.icon} Level ${L.id}: ${L.name}</h2><span class="chip-std noread">${STD}</span>
+ <div class="ican"><b>I can…</b><ul>${L.ican.map(x=>'<li>'+x+'</li>').join('')}</ul></div></div>
+ <div class="lprog noread" id="lprog"></div>
+ ${L.stamina?`<div class="stam" id="stam"><b class="fred" style="font-size:24px">🔋 Stamina Meter</b><div class="battery"></div><div class="smsg" style="font-weight:800"></div><div class="note" style="color:#fff">This round spirals back through ALL levels. Every question charges your battery!</div></div>`:''}
+ ${L.learn.length?`<div class="sect">📚 Learn It</div>`+L.learn.map(c=>`<div class="card"><button class="say">🔊 Read</button><h3>${c.t}</h3>${c.h}</div>`).join(''):''}
+ <div class="sect">⚡ ${L.stamina?'Stamina Rounds':'Practice It'}</div>
+ ${L.acts.map((a,i)=>actHTML(L,a,i)).join('')}
+ ${L.id<4?`<button class="nextbtn" data-lv="${L.id+1}">Level ${L.id+1}: ${LEVELS[L.id].name} →</button>`:finalHTML()}
+ </section>`;lprog();stamina()}
+function finalHTML(){const x=xp(),all=LEVELS.every(lvDone);return `<div class="card trophy" id="finalCard"><span class="big">${all?'🏆':'🎯'}</span><b class="fred" style="font-size:26px">${title(x)}</b><br>${x} of ${MAXXP} XP • Badges: ${LEVELS.filter(lvDone).length}/4 • Best streak: 🔥${S.best}<br><span class="note">${all?'You powered through every level. That’s real reading stamina!':'Finish every level to collect all 4 badges!'}</span>${all?'<br><button class="tbtn" id="party" style="margin-top:10px">🎉 Celebrate again!</button>':''}</div>
+ <div class="act" id="repCard"><h4 style="padding:0">📄 My POV Report</h4><p class="noread">Make your report, then download or print it and turn it in on Canvas as Mrs. Rees directs.</p><div class="rbtns"><button id="repBtn">📋 Show report</button><button id="dlBtn">⬇️ Download (.txt)</button><button id="prBtn">🖨️ Print / save PDF</button></div><div id="report"></div></div>`}
+
+function report(){const x=xp();let t='POV POWER-UP • REVIEW REPORT (ELA.6.R.1.3)\nStudent: '+(S.name.trim()||'[Name missing]')+'\nDate: '+new Date().toLocaleString()+'\nXP: '+x+' / '+MAXXP+'  •  '+title(x).replace(/^\S+\s/,'')+'  •  Best streak: '+S.best+'\n';
+ const dk={1:[0,0],2:[0,0],3:[0,0]};
+ LEVELS.forEach(L=>{t+='\n== LEVEL '+L.id+': '+L.name.toUpperCase()+' ==\n';L.acts.forEach((a,i)=>{const id=aid(L.id,i),d=S.d[id]||{},mx=maxPts(a);if(a.type!=='write'){dk[a.dok][1]+=mx;dk[a.dok][0]+=d.done?d.pts:0}
+  t+='  ['+'DOK '+a.dok+'] '+a.title+': '+(a.type==='write'?'\n'+(d.text||'[Missing]'):d.done?d.pts+'/'+mx:'Not done')+'\n'})});
+ t+='\n== SCORE BY DOK LEVEL (auto-scored items) ==\n';[1,2,3].forEach(k=>t+='  DOK '+k+': '+dk[k][0]+'/'+dk[k][1]+(dk[k][1]?' ('+Math.round(dk[k][0]/dk[k][1]*100)+'%)':'')+'\n');
+ t+='  Written responses need teacher review.\n';$('#report').textContent=t;return t}
+
+/* ===================== EVENTS ===================== */
+$('#student').value=S.name;$('#student').oninput=e=>{S.name=e.target.value;save()};
+$('#rate').value=S.rate;$('#rate').oninput=e=>{S.rate=e.target.value;save()};
+$('#stopBtn').onclick=stopSpeak;$('#soundBtn').onclick=()=>{S.sound=!S.sound;save();hud()};
+function findAct(id){const [l,i]=id.slice(1).split('a').map(Number);return {L:LEVELS[l-1],a:LEVELS[l-1].acts[i-1],i:i-1}}
+function rerender(id){const {L,a,i}=findAct(id);$('#box-'+id).outerHTML=actHTML(L,a,i);hud()}
+function place(id,k,bin){const d=getD(id);d.place=d.place||{};if(bin<0)delete d.place[k];else d.place[k]=bin;d.pick=undefined;save();tone([620]);rerender(id)}
+
+/* Drag and drop with finger, Apple Pencil, or mouse (pointer events) */
+let drag=null,suppress=false;
+document.addEventListener('pointerdown',e=>{const c=e.target.closest('.dchip');if(!c||c.disabled)return;drag={c,id:c.dataset.act,k:+c.dataset.chip,x:e.clientX,y:e.clientY,moved:false,g:null}});
+document.addEventListener('pointermove',e=>{if(!drag)return;if(!drag.moved&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>8){drag.moved=true;const r=drag.c.getBoundingClientRect();const g=drag.c.cloneNode(true);g.classList.add('ghost');g.style.width=r.width+'px';drag.ox=e.clientX-r.left;drag.oy=e.clientY-r.top;document.body.appendChild(g);drag.g=g;drag.c.style.opacity=.3}
+ if(drag.moved){e.preventDefault();drag.g.style.left=(e.clientX-drag.ox)+'px';drag.g.style.top=(e.clientY-drag.oy)+'px';document.querySelectorAll('.bin.over').forEach(b=>b.classList.remove('over'));const t=document.elementFromPoint(e.clientX,e.clientY);const b=t&&t.closest('.bin');if(b&&b.dataset.act===drag.id)b.classList.add('over')}},{passive:false});
+document.addEventListener('pointerup',e=>{if(!drag)return;const D=drag;drag=null;if(!D.moved)return;suppress=true;setTimeout(()=>suppress=false,50);D.g.remove();D.c.style.opacity='';document.querySelectorAll('.bin.over').forEach(b=>b.classList.remove('over'));const t=document.elementFromPoint(e.clientX,e.clientY);const z=t&&t.closest('[data-bin]');if(z&&z.dataset.act===D.id)place(D.id,D.k,+z.dataset.bin)});
+document.addEventListener('pointercancel',()=>{if(drag&&drag.g){drag.g.remove();drag.c.style.opacity=''}drag=null});
+
+document.addEventListener('click',e=>{if(suppress)return;const b=e.target.closest('button');
+ const zone=e.target.closest('[data-bin]');
+ if(zone&&!e.target.closest('.dchip')){const id=zone.dataset.act,d=getD(id);if(!d.done&&d.pick!==undefined){place(id,d.pick,+zone.dataset.bin);return}}
+ if(!b)return;
+ if(b.dataset.lv){S.lv=+b.dataset.lv;save();render();window.scrollTo({top:$('#map').offsetTop-70,behavior:'smooth'});return}
+ if(b.classList.contains('say')){const box=b.closest('.act,.card');speak(textOf(box),box);return}
+ if(b.dataset.demo){const n=b.dataset.demo,dm=$('#demo');dm.classList.toggle('s'+n);b.classList.toggle('on'+n);tone([500+n*80]);return}
+ if(b.dataset.check){const {a}=findAct(b.dataset.check);grade(a,b.dataset.check);rerender(b.dataset.check);return}
+ if(b.id==='party'){confetti(180);tone([523,659,784,1047,1319]);toast('🎉 You’re a POV Legend!');return}
+ const id=b.dataset.act;
+ if(id){const {a}=findAct(id),d=getD(id);if(d.done)return;
+  if(b.dataset.mc!==undefined){const j=+b.dataset.mc,part=b.dataset.part,need=(part==='A'?a.A.a:part==='B'?a.B.a:a.a).length,key=part==='x'?'sel':part;let s=d[key]||[];if(need>1)s=s.includes(j)?s.filter(v=>v!==j):(s.length<need?[...s,j]:s);else s=[j];d[key]=s;tone([560])}
+  else if(b.dataset.chip!==undefined){const k=+b.dataset.chip,z=b.closest('.bin');if(d.pick!==undefined&&d.pick!==k&&z){place(id,d.pick,+z.dataset.bin);return}d.pick=d.pick===k?undefined:k;tone([500])}
+  else if(b.dataset.mk!==undefined){d.mk=+b.dataset.mk}
+  else if(b.dataset.tk!==undefined){const k=+b.dataset.tk,mk=d.mk===undefined?1:d.mk;d.col=d.col||{};if(mk===0||d.col[k]===mk)delete d.col[k];else d.col[k]=mk;tone([480+mk*90])}
+  else if(b.dataset.sent!==undefined){const k=+b.dataset.sent;let on=d.on||[];if(a.a.length===1)on=on.includes(k)?[]:[k];else on=on.includes(k)?on.filter(v=>v!==k):(on.length<a.a.length?[...on,k]:on);d.on=on;tone([580])}
+  save();rerender(id);return}
+ if(b.id==='repBtn'){report();return}
+ if(b.id==='dlBtn'){const t=report(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}));a.download='POV-Power-Up-'+(S.name.trim().replace(/\s+/g,'-')||'Report')+'.txt';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);return}
+ if(b.id==='prBtn'){report();window.print();return}
+});
+let wt;document.addEventListener('input',e=>{const ta=e.target.closest('textarea[data-write]');if(!ta)return;const id=ta.dataset.act,d=getD(id);d.text=ta.value;save();const n=words(ta.value),wc=$('#wc-'+id);wc.textContent=n+' words '+(n>=MINW?'✅ +15 XP':'(write at least '+MINW+' words for +15 XP)');wc.classList.toggle('ok',n>=MINW);clearTimeout(wt);wt=setTimeout(afterProgress,600)});
+render();
+</script>
+</body>
+</html>
